@@ -10,12 +10,12 @@ export default (state = initialState, { type, payload }) => {
         name: payload.name,
         age: payload.age,
       };
-      return {
+      state = {
         ...state,
         persons: state.persons.concat(newPerson),
       }
     case "SUB":
-      return {
+      state = {
         ...state,
         persons: state.persons.filter(person => person.id !== payload),
       }
