@@ -1,54 +1,7 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
-import { Provider } from "react-redux";
-import { createStore, applyMiddleware, compose, combineReducers } from "redux";
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-// actionをラッピングし、dispatchを引数にとる関数が返せる
-import thunk from "redux-thunk";
+import './index.css';
+import App from './App';
 
-import "./index.css";
-import App from "./App";
-import * as serviceWorker from "./serviceWorker";
-import burgerBuilderReducer from "./store/reducers/burgerBuilder";
-import orderReducer from "./store/reducers/order";
-import authReducer from "./store/reducers/auth";
-
-
-const composeEnhancers =
-  process.env.NODE_ENV === "development" // 開発環境であれば、devtoolsを有効化
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    : null || compose;
-// compose 右から左に関数を合成する
-
-// reducer 各namespaceをつけて一つに統合
-const rootReducer = combineReducers({
-  burgerBuilder: burgerBuilderReducer,
-  order: orderReducer,
-  auth: authReducer,
-});
-
-const store = createStore(
-  rootReducer,
-  composeEnhancers(
-    applyMiddleware(thunk) // thunkをmiddlewareとして取り込む
-  )
-);
-
-const app = (
-  <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </Provider>
-);
-
-ReactDOM.render(
-  <React.StrictMode>{app}</React.StrictMode>,
-  document.getElementById("root")
-);
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+ReactDOM.render(<App />, document.getElementById('root'));
