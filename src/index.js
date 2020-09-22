@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware, compose, combineReducers } from "redux";
+
+// actionをラッピングし、dispatchを引数にとる関数が返せる
 import thunk from "redux-thunk";
 
 import "./index.css";
@@ -12,10 +14,14 @@ import burgerBuilderReducer from "./store/reducers/burgerBuilder";
 import orderReducer from "./store/reducers/order";
 import authReducer from "./store/reducers/auth";
 
+
 const composeEnhancers =
-  process.env.NODE_ENV === "development"
+  process.env.NODE_ENV === "development" // 開発環境であれば、devtoolsを有効化
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     : null || compose;
+// compose 右から左に関数を合成する
+
+// reducer 各namespaceをつけて一つに統合
 const rootReducer = combineReducers({
   burgerBuilder: burgerBuilderReducer,
   order: orderReducer,
@@ -24,7 +30,9 @@ const rootReducer = combineReducers({
 
 const store = createStore(
   rootReducer,
-  composeEnhancers(applyMiddleware(thunk))
+  composeEnhancers(
+    applyMiddleware(thunk) // thunkをmiddlewareとして取り込む
+  )
 );
 
 const app = (
