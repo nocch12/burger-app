@@ -8,17 +8,27 @@ const Ingredients = () => {
   const [userIngredients, setUserIngredients] = useState([]);
 
   const addIngredientHandler = (ingredient) => {
-    setUserIngredients((prevIngredients) => [
-      ...prevIngredients,
-      { id: Math.random().toString(), ...ingredient },
-    ]);
+    fetch("https://react-hooks-update-4452b.firebaseio.com/ingredients.json", {
+      method: "POST",
+      body: JSON.stringify(ingredient),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((responseData) => {
+        setUserIngredients((prevIngredients) => [
+          ...prevIngredients,
+          { id: responseData.name, ...ingredient },
+        ]);
+      });
   };
 
   const removeIngredientHandler = (id) => {
     setUserIngredients((prevIngredients) => [
-      ...prevIngredients.filter(ing => {
+      ...prevIngredients.filter((ing) => {
         return ing.id !== id;
-      })
+      }),
     ]);
   };
 
@@ -28,7 +38,10 @@ const Ingredients = () => {
 
       <section>
         <Search />
-        <IngredientList ingredients={userIngredients} onRemoveItem={removeIngredientHandler} />
+        <IngredientList
+          ingredients={userIngredients}
+          onRemoveItem={removeIngredientHandler}
+        />
       </section>
     </div>
   );
